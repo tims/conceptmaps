@@ -24,36 +24,16 @@ class Context:
         return sorted(list(self.attributes))
 
     def intent(self, objects):
-        if not objects:
-            return self.attributes
+        if len(objects) == 1:
+            return self.objectToAttributes[list(objects)[0]]
         else:
-            # attribute_lists = (self.objectToAttributes[obj] for obj in objects)
-            intent = []
-            for y in self.attributes:
-                yes = True
-                for x in objects:
-                    if y not in self.objectToAttributes[x]:
-                        yes = False
-                if yes:
-                    intent.append(y)
-            return set(intent)
-            #return reduce(lambda accum, attrs: accum.intersection(attrs), attribute_lists, set())
+            return reduce(lambda accum, x: accum.intersection(self.intent([x])), objects, set(self.attributes))
 
     def extent(self, attributes):
-        if not attributes:
-            return self.objects
+        if len(attributes) == 1:
+            return self.attributeToObjects[list(attributes)[0]]
         else:
-            extent = []
-            for x in self.objects:
-                yes = True
-                for y in attributes:
-                    if x not in self.attributeToObjects[y]:
-                        yes = False
-                if yes:
-                    extent.append(x)
-            return set(extent)
-            # object_lists = (self.attributeToObjects[obj] for obj in attributes)
-            # return reduce(lambda accum, attrs: accum.union(attrs), object_lists, set())
+            return reduce(lambda accum, y: accum.intersection(self.extent([y])), attributes, set(self.objects))
 
 
 def generate_from(context, concept, attribute_y):
