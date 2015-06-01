@@ -57,12 +57,10 @@ class Context:
 
 
 def generate_from(context, concept, attribute_y):
-    print 'generate_from', attribute_y
     context_attributes = context.sorted_attributes()
     y = context_attributes.index(attribute_y)
     concepts = []
     for attribute_j in context_attributes[y:]:
-        print 'attribute_j', attribute_j
         if attribute_j in concept.intent:
             pass
         else:
@@ -72,30 +70,12 @@ def generate_from(context, concept, attribute_y):
             intent = context.intent(extent)
             concept_j = Concept(extent, intent)
 
-            extent_ = context.extent(list(concept.intent) + [attribute_j])
-            intent_ = context.intent(extent_)
-
             processed_attributes = filter(lambda attr: attr < attribute_j, context.attributes)
 
-            print 'j', attribute_j
-            print 'extent', context.extent(intent), extent
-            print 'intent', context.intent(extent), intent
-            print 'extent_, intent_', list(concept.intent) + [attribute_j], extent_, intent_
-
-            print len(extent.difference(context.extent(intent))) != 0
-            print len(extent) != len(context.extent(intent))
             if len(extent) != len(context.extent(intent)):
-                raise 'bla'
+                raise 'This is not a concept!'
             if len(intent) != len(context.intent(extent)):
-                print ('not a concept')
-                print intent == context.intent(concept.extent)
-                print len(intent.intersection(context.intent(concept.extent))) == 0
-                print intent, context.intent(concept.extent)
-                print 'intent', context.intent(extent), intent
-                print 'extent', context.extent(intent), extent
-                print 'intent.difference(context.intent(concept.extent))', intent.difference(
-                    context.intent(concept.extent))
-                raise 'bla2'
+                raise 'This is not a concept!'
 
             concepts.append(concept_j)
 
